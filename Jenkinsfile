@@ -2,26 +2,23 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Clone Code') {
+        stage('Clone Repo') {
             steps {
-                git branch: 'main', url: 'https://github.com/umanagesh789/student-feedback-system.git'
+                git branch: 'main', url: 'https://github.com/MohammedxFarman/devops-mini-project.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t student-feedback-app .'
+                sh 'docker build -t feedback-app .'
             }
         }
 
         stage('Run Container') {
             steps {
-                bat 'docker stop student-app || exit 0'
-                bat 'docker rm student-app || exit 0'
-                bat 'docker run -d -p 5000:5000 --name student-app student-feedback-app'
+                sh 'docker rm -f feedback-container || true'
+                sh 'docker run -d -p 5000:5000 --name feedback-container feedback-app'
             }
         }
-
     }
 }
